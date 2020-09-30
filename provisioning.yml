@@ -13,15 +13,17 @@
           - mysql-server-5.6
           - python-mysqldb
           - php5-mysql
-        state: latest
+        state: latest #Indica que queremos sempre a ultima versão
       become: yes
     
+    #Modulo para criar banco de dados mysql
     - name: 'Cria o banco MySql'
       mysql_db:
         name: wordpress_db
         login_user: root
         state: present
     
+    #Modulo para criar usuario dentro de um banco
     - name: 'Cria o usuário do MySQL'
       mysql_user:
         login_user: root
@@ -30,14 +32,38 @@
         priv: 'wordpress_db.*:ALL'
         state: present
     
+    #Modulo para baixar um arquivo para maquina destino direto que uma url 
     - name: 'Baixa o arquivo de instalacao do Wordpress'
       get_url:
         url: https://wordpress.org/latest.tar.gz'
         dest: '/tmp/wordpress.tar.gz'
     
+    #Modulo para descompactar arquivo
     - name: 'Descompacta o wordpress'
       unarchive:
         src: '/tmp/wordpress.tar.gz'
         dest: /var/www/
         remote_src: yes
+      become: yes
+    
+    #Modulo para copiar o arquivo wp-config-sample.php para
+    #Um novo arquivo com o nome wp-config.php
+    - copy:
+        src: '/var/www/wordpress/wp-config-sample.php'
+        dest: '/var/www/wordpress/wp-config.php'
+        remote_src: yes #Indica que o arquivo já está localizado na maquina destino
+      become: yes # Indica que o bloco será feito pelo usuario root
+    
+    #Modulo de alteração do arquivo wp-config.php
+    #onde encontrar os valores database_name_here,username_here e password_here
+    #Substituir pelos valores wordpress_db, wordpress_user,12345
+    - name: 'Configura o wp-config com as entradas do banco de dados'     
+      replace:
+        path: '/var/www/wordpress/wp-config.php'
+        regexp: "{{ item.regex }}"
+        replace: "{{ item.value }}"
+      with_items:
+        - { regex: 'database_name_here', value: 'wordpress_db'}
+        - { regex: 'username_here', value: 'wordpress_user'}
+        - { regex: 'password_here', value: '12345'}
       become: yes

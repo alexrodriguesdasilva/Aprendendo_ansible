@@ -1,0 +1,25 @@
+Você está recebendo um erro UNREACHABLE parecido com a saída abaixo?
+
+172.17.177.40 | UNREACHABLE! => {
+ "changed": false,
+ "msg": "Failed to connect to the host via ssh: vagrant@172.17.177.40: Permission denied (publickey,password).\r\n",
+ "unreachable": true
+}
+
+Na pasta do seu projeto crie uma nova pasta ssh-keys
+$ mkdir ssh-keys
+$ cd ssh-keys
+
+Depois gere as chaves com o comando:
+$ ssh-keygen -t rsa
+
+O comando pergunta onde você gostaria de guardar as chaves e qual será o nome da chave. Defina a pasta ssh-keys como destino e como base o nome vagrant_id_rsa, por exemplo:
+/Users/<seu-usuario>/wordpress_com_ansible/ssh-keys/vagrant_id_rsa
+
+Vamos copiar a chave pública gerada para a VM. Para tal digite na pasta ssh-keys
+```
+$ ssh-copy-id -i vagrant_id_rsa.pub vagrant@172.17.177.40
+
+
+Mude o arquivo hosts para indicar a nova chave 
+```

@@ -23,3 +23,30 @@ $ ssh-copy-id -i vagrant_id_rsa.pub vagrant@172.17.177.40
 
 Mude o arquivo hosts para indicar a nova chave 
 ```
+
+________________________________________________________________________________________________________________________________________________________________________
+
+Erro ao usar o comando ssh-copy-id
+
+alerodrigues@NI-66133-8:/tmp/Aprendendo_ansible/ssh-keys$ ssh-copy-id -i id_rsa.pub vagrant@172.17.177.40
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+
+/usr/bin/ssh-copy-id: ERROR: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ERROR: @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+ERROR: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ERROR: IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+ERROR: Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+ERROR: It is also possible that a host key has just been changed.
+ERROR: The fingerprint for the ECDSA key sent by the remote host is
+ERROR: SHA256:YRrSsqr43sL0N+7dMPxM3sCMiXCHJXc6iruZjA2m42I.
+ERROR: Please contact your system administrator.
+ERROR: Add correct host key in /home/alerodrigues/.ssh/known_hosts to get rid of this message.
+ERROR: Offending ECDSA key in /home/alerodrigues/.ssh/known_hosts:29
+ERROR:   remove with:
+ERROR:   ssh-keygen -f "/home/alerodrigues/.ssh/known_hosts" -R "172.17.177.40"
+ERROR: ECDSA host key for 172.17.177.40 has changed and you have requested strict checking.
+ERROR: Host key verification failed.
+
+Verificar o arquivo /home/alerodrigues/.ssh/known_hosts
+Podemos usar o comando ssh-keygen -f "/home/alerodrigues/.ssh/known_hosts" -R "172.17.177.40"
